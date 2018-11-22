@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>贪吃蛇</title>
+	<link rel="stylesheet" href="">
+	<style>
+		.map{
+			width: 800px;
+		    height: 600px;
+		    background-color: #CCC;
+		    position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div class="map"></div>
+	<script src="js/common.js"></script>	
+	<script src="js/index.js"></script>
+	
+	<script type="text">
+		//产生随机数对象的
+		(function (window) {
+			function Random(){
+
+			}
+
+			Random.prototype.getRandom = function(min,max){
+				return Math.floor(Math.random() * (max - min) + min);
+			}
+			window.Random = new Random();
+		})(window);
+
+		//产生小方块对象
+		(function (window){
+			//console.log(Random.getRandom(0,5));
+			//选择器的方式来获取元素对象
+    		var map=document.querySelector(".map");
+
+
+			//食物的构造函数
+			function Food(width,height,color){
+				this.width = width || 20;
+				this.height = height || 20;
+				this.color = color;
+
+				//横纵坐标
+				this.x = 0;
+				this.y = 0;
+
+				this.element = document.createElement('div');
+			}
+
+			//初始化小方块的显示的效果及位置---显示地图上
+			Food.prototype.init = function (map){
+				var div = this.element;
+				div.style.position = "absolute";
+				div.style.width = this.width + 'px';
+				div.style.height = this.height + 'px';
+				div.style.backgroundColor = this.color;
+
+     
+				//把小方块加到map地图中
+				map.appendChild(div);
+				this.render(map);
+			}
+
+			//产生随机位置
+			Food.prototype.render = function(map){
+				var x = Random.getRandom(0,map.offsetWidth / this.width) * this.width; 
+				var y = Random.getRandom(0,map.offsetHeight / this.height) * this.height; 
+				this.x = x;
+				this.y = y
+				var div = this.element;
+				div.style.top = this.y + 'px';
+				div.style.left = this.x + 'px';
+			}
+
+			//实例化对象
+			var fd=new Food(20,20,"green");
+		    fd.init(map);
+		    console.log(fd.x+"===="+fd.y);
+
+		})(window);
+	</script>
+</body>
+</html>
