@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #d7d3b6;
+}
+
+.main {
+    overflow: hidden;
+    text-align: center;
+}
+
+.main .gameName {
+    font-size: 35px;
+    font-weight: bold;
+}
+.main .maxScore {
+    font-size: 20px;
+}
+
+.main .maxScore span {
+    font-weight: bold;
+    color: red;
+}
+
+.main .gameBody {
+    background-color: #999999;
+    border-radius: 10px;
+}
+
+.main .gameBody .row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main .gameBody .row .item {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    background-color: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 70px;
+    font-size: 30px;
+}
+
+.main .gameRule {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.main .gameScore {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.main .gameScore span {
+    font-size: 30px;
+    color: red;
+}
+
+.main .scoreAndRefresh {
+    display: flex;
+    justify-content: space-around;
+    /*width: 280px;*/
+    margin: 0 auto;
+    text-align: center;
+}
+
+.main .scoreAndRefresh .refreshBtn {
+    height: 30px;
+    margin-top: 8px;
+}
+
+
+.modal {
+    margin-top: 150px;
+
+}
+
+.modal .modal-header h4 {
+    text-align: left;
+    font-weight: bold;
+}
+
+.modal .modal-dialog {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.modal .modal-body {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+    text-align: center;
+}

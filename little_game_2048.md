@@ -1,0 +1,1 @@
+[参考链接](https://github.com/nnngu/js_game_2048)s
