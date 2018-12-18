@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>评论</title>
+	<link rel="stylesheet" href="">
+	<style>	
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			color: #333;
+			background: #3c3a3b;
+			font-size: 12px/1.5;
+		}
+		.msgBox {
+			width: 500px;
+			margin: 0 auto;
+			background: #fff;
+			border-radius: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+			box-sizing: border-box;
+
+		}
+		form p {
+			padding-top:10px;
+			padding-bottom: 10px;
+		}
+		form input {
+			height: 20px;
+			width: 200px;
+		}
+		form img {
+			height: 28px;
+			vertical-align: top;
+			opacity:0.5;
+			cursor:pointer;
+		}
+		form img.current,form img.click {
+			opacity:1;
+		}
+		form textarea {
+			width: 470px;
+			height: 65px;
+			resize: none;
+			overflow: hidden;
+			margin-bottom: 10px;
+		}
+		.des {
+			text-align: right;
+		}
+		.des button{
+			width: 50px;
+			line-height: 30px;
+			text-align: center;
+			border:none;
+			background-color: #ccc;
+			margin: 10px;
+			cursor:pointer;
+		}
+		.content {
+			margin:10px;
+		}
+		.content .title {
+			background-color: rgba(0,0,255,0.5);
+			color:#000;
+			line-height: 30px;
+			padding-left: 10px;
+		}
+		.content .ctext {
+			padding-top: 10px;
+			padding-bottom: 20px;
+			border-bottom: 1px dashed #000;
+		}
+		.content .ctext:last-child{
+			border-bottom: none;
+		}
+		
+		.content .active {
+			background-color: #ccc;
+		}
+
+		.content .ctext .fleft {
+			float: left;
+		}
+		.content .ctext .fright {
+		 	/*float: right;*/
+			margin-left: 60px;
+		}
+		.content .ctext .fright .time {
+			font-size: 12px;
+			color:red;
+			margin-top: 10px;
+		}
+		.content .ctext .fright .del {
+			color:#889dbc;
+			text-decoration: underline;
+			float: right;
+			cursor: pointer;
+			display: none;
+    		margin-right: 10px;
+		}
+		.content .ctext .fright .active {
+			display: block;
+		}
+		.content .ctext .fright .word {
+			word-wrap:break-word;
+		}
+	</style>
+</head>
+<body>
+	<div class="msgBox">
+		<form action="">
+			<p>来，说说你在做什么，想什么</p>
+			<p class='img'>
+				<input type="text" id="name">
+				<img src="./images/face1.gif" class="current click">
+				<img src="./images/face2.gif">
+				<img src="./images/face3.gif">
+				<img src="./images/face4.gif">
+				<img src="./images/face5.gif">
+				<img src="./images/face6.gif">
+				<img src="./images/face7.gif">
+				<img src="./images/face8.gif">
+			</p>
+			<textarea id="text"></textarea>
+		</form>
+
+		<p class="des">
+			<span><em class="num">还能输入 140 个字</em> </span>
+			<button id="btn">发布</button>
+		</p>
+
+		<div class="content">
+			<p class="title">大家都在说</p>
+			<div class="ctext">
+				<div class="fleft">
+					<img src="./images/face.gif">
+					
+				</div>
+				<div class="fright">
+						<p>
+							<span class="name">日、久生情</span> : 
+							<span class="word">新增Enter快捷键发送广播。</span>
+						</p>
+						<p class="time">
+							<span>12月06日 17:45</span>
+							<span class="del">删除</span>
+						</p>
+					</div>
+			</div>
+
+			<div class="ctext">
+				<div class="fleft">
+					<img src="./images/face.gif">
+					
+				</div>
+				<div class="fright">
+						<p>
+							<span class="name">日、久生情</span> : 
+						<span class="word"> 仿腾讯微博效果，欢迎大家测试！</span>
+						</p>
+						<p class="time">
+							<span>12月06日 17:32</span>
+							<span class="del">删除</span>
+						</p>
+					</div>
+			</div>
+
+		</div>
+	</div>
+	<script src="./jquery-3.3.1.min.js"></script>
+	<script>
+		
+		// 评论区
+		$(".content").on("mouseover",".ctext",function () {
+			$(this).addClass('active');
+			$(this).find('.del').addClass('active');
+		}).on("mouseout",".ctext",function () {
+			$(this).removeClass('active');
+			$(this).find('.del').removeClass('active');
+		});
+	
+		// 头像
+		
+		$(".img img").on("click",function () {
+			$(this).unbind('mouseout');
+			// $(".img img").removeClass('current');
+			$(this).siblings().removeClass('click current');
+			$(this).addClass('click');
+
+		}).on("mouseover",function (e) {
+			$(this).addClass('current');
+		}).on("mouseout",function (e) {
+			$(this).removeClass('current');
+		})
+
+		// 日期两位格式
+		function format(num){
+			var reg = /\d{2}/;
+			if(reg.test(num)){
+				return num;
+			}else {
+				return '0' + num;
+			}
+
+			// return num.toString().replace(/^(\d)$/,"0$1")
+		}
+
+		// 获取时间，并格式化
+		function getTime() {
+
+			var time = new Date();
+			var month = time.getMonth() + 1;
+			var day = time.getDay();
+
+			var hour = time.getHours();
+			var minute = time.getMinutes();
+
+
+
+			var res = format(month) +'月' + format(day) + '日 ' + format(hour) + ':' + format(minute);
+			return res;
+
+		}
+
+
+		function add() {
+			var name = $("#name").val();
+			var text = $("#text").val();
+
+			var photo = $('img.click')[0].src;
+			
+			var content = $(".content");
+
+			if(name === ''){
+				alert("请输入用户名");
+				return false;
+			}
+			if(text === ''){
+				alert("发布的内容不能为空");
+				return false;
+			}
+
+			// 动态创建元素
+			var $ele = $('<div class="ctext">'+
+				'<div class="fleft">'+
+					'<img src="'+photo+'">'+
+					
+				'</div>'+
+				'<div class="fright">'+
+						'<p>'+
+							'<span class="name">'+name+'</span> : '+
+						'<span class="word">'+ text+'</span>'+
+						'</p>'+
+						'<p class="time">'+
+							'<span>'+getTime()+'</span>'+
+							'<span class="del">删除</span>'+
+						'</p>'+
+					'</div>'+
+			'</div>');
+			
+			content.append($ele);
+
+		}
+
+		
+		$("#btn").on("click",add);
+
+		// 删除
+		$(".content").on("click",".del",function(){
+			$(this).parents(".ctext").remove();
+		})
+
+		// 实时监控输入的位数
+		$('textarea').bind('input propertychange', function() {
+		    
+		    if($(this).val().length > 140){
+		    	var num = $(this).val().length - 140;
+		    	$('.num').html("已经超出 " + num + " 个字");
+		    }else {
+		    	var num = 140 - $(this).val().length;
+		    	$('.num').html("还能输入 " + num + " 个字");
+		    }
+		});
+
+		// 按回车发布
+		// keydown，keypress，keyup，分别是按下，按着没上抬，上抬键盘
+		$(document).keyup(function(event){
+		  if(event.keyCode == 13){
+		    $("#btn").trigger("click");
+		  }
+		});
+
+	</script>
+
+</body>
+	
+	
+</html>
