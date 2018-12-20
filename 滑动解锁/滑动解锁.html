@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>滑动解锁</title>
+	<link rel="stylesheet" href="">
+	<style type="text/css" media="screen">
+		.iphone{
+			position:relative;
+			width: 426px;
+			height: 620px;
+			background: url(http://fgm.cc/iphone/1.jpg) no-repeat;
+			margin:10px auto;
+		}
+		#lock {
+			position: absolute;
+			bottom: 12px;
+			left: 50%;
+			width:358px;
+			height:62px;
+			margin-left: -179px;
+		}
+		#lock span{
+			position: absolute;
+			background:url(http://fgm.cc/iphone/btn.jpg) no-repeat;
+			width:93px;
+			height:62px;
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="iphone" id="iphone">
+		<div id="lock"><span></span></div>
+	</div>
+	<script>
+		var iphone = document.getElementById("iphone");
+		var lock = document.getElementById("lock");
+		var obtn = lock.getElementsByTagName("span")[0];
+
+		var maxL = lock.clientWidth - obtn.offsetWidth;
+		// console.log(lock.clientWidth);  //lock 的宽度
+		// console.log(obtn.offsetWidth);  // btn 的宽度
+		// console.log(maxL);              // 最大的可移动的距离
+
+		var disX = 0;
+
+		var obg = document.createElement("img");
+		obg.src = "http://fgm.cc/iphone/2.jpg";//预加载下第二张背景，其它没什么大用。
+
+		obtn.onmousedown = function (e) {
+			var e = e || window.event;
+			console.log("外层e.clientX",e.clientX);    // 鼠标的 x 坐标
+			console.log("外层this.offsetLeft",this.offsetLeft);   // 距离有定位的父级元素的 left 值
+			disX = e.clientX - this.offsetLeft;
+			console.log(disX);
+			document.onmousemove = function (e) {
+				var e = e || window.event;
+				// console.log("内层e.clientX",e.clientX);
+				var l = e.clientX - disX;	
+
+				l < 0 && (l = 0);
+				l > maxL && (l = maxL);
+
+				obtn.style.left = l + 'px';
+
+				obtn.offsetLeft == maxL && (iphone.style.background = "url("+ obg.src +")", lock.style.display = 'none');
+
+				return false;
+			}
+
+			document.onmouseup = function () {
+				document.onmousemove = null;
+				document.onmouseup = null;
+
+				obtn.releaseCapture && obtn.releaseCapture();
+
+				obtn.offsetLeft > maxL / 2 ? startMove(maxL,function () {
+					iphone.style.background = "url("+ obg.src +")";
+					lock.style.display = 'none';
+				}):startMove(0);
+			}
+
+			this.setCapture && this.setCapture();
+		}
+
+		function startMove(itarget,onEnd) {
+			clearInterval(obtn.timer)
+			obtn.timer = setInterval(function(){
+				doMove(itarget,onEnd);
+			}, 30)
+		}
+		function doMove(itarget,onEnd) {
+			var iSpeed = (itarget - obtn.offsetLeft) / 5;
+			iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+			itarget == obtn.offsetLeft ? (clearInterval(obtn.timer), onEnd && onEnd()) : obtn.style.left = iSpeed + obtn.offsetLeft + "px"
+		}
+	</script>
+</body>
+</html>
